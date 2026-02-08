@@ -13,19 +13,17 @@ services:
     networks:
       - global
 
-  web:
-    restart: always
-    build:
-      dockerfile: ./Dockerfile-dev
-      context: ./back/
-    ports:
-      - "127.0.0.1:8000:8000"
-    volumes:
-      - ./back:/app
-    depends_on:
-      - db
-    networks:
-      - global
+web:
+  restart: always
+  build:
+    context: ./back/
+    dockerfile: Dockerfile   # oder Dockerfile-dev, aber dann mit COPY
+  ports:
+    - "127.0.0.1:8000:8000"
+  depends_on:
+    - db
+  networks:
+    - global
 
 volumes:
   pgdata:
