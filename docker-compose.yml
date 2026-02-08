@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   db:
     restart: always
@@ -7,26 +9,27 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     networks:
       - global
 
-web:
-  restart: always
-  build:
-    context: ./back/
-    dockerfile: Dockerfile   # oder Dockerfile-dev, aber dann mit COPY
-  ports:
-    - "127.0.0.1:8000:8000"
-  depends_on:
-    - db
-  networks:
-    - global
+  web:
+    restart: always
+    build:
+      context: ./back/
+      dockerfile: Dockerfile-dev   # später idealerweise Dockerfile (prod), siehe unten
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      - db
+    networks:
+      - global
 
 volumes:
   pgdata:
 
 networks:
   global:
+    driver: bridge
